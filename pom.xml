@@ -16,6 +16,7 @@
     <modules>
         <module>main-api</module>
         <module>grammy-service</module>
+        <module>grammy-rest-adapter</module>
     </modules>
 
     <properties>
