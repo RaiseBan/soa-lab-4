@@ -41,7 +41,6 @@ public class MainApiClient {
         String baseUrl = consulServiceDiscovery.getServiceUrl(SERVICE_NAME);
 
         if (baseUrl == null) {
-            
             LOGGER.warning("Consul unavailable, using fallback URL");
             baseUrl = System.getProperty("main.api.url", "https://localhost:8443");
         }

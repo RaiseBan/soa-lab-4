@@ -14,8 +14,8 @@
     <artifactId>grammy-service-ejb</artifactId>
     <packaging>ejb</packaging>
 
-    <name>Grammy Service EJB</name>
-    <description>EJB module with business logic for Grammy Service</description>
+    <name>Grammy SOAP Service EJB</name>
+    <description>EJB module with business logic for Grammy SOAP Service</description>
 
     <dependencies>
         <!-- Jakarta EE Web API -->

@@ -24,24 +24,19 @@ public class ParticipantServiceBean implements ParticipantServiceRemote {
             throw new IllegalArgumentException("Band with id " + bandId + " not found");
         }
 
-        
         participant.setBandId(bandId);
         participant.setId(null);
         Participant created = repository.create(participant);
 
-        
         long participantsCount = repository.countByBandId(bandId);
 
-        
         boolean updated = mainApiClient.updateParticipantsCount(bandId, (int) participantsCount);
         if (!updated) {
             throw new RuntimeException("Failed to update participants count in Main API");
         }
 
-        
         String bandName = mainApiClient.getBandName(bandId);
 
-        
         return new AddParticipantResponse(created, (int) participantsCount, bandId, bandName);
     }
 }

@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 @XmlRootElement(name = "addParticipantResponse")
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "AddParticipantResponse", propOrder = {"participant", "updatedParticipantsCount", "bandInfo"})
 @Data
 @NoArgsConstructor
 public class AddParticipantResponse implements Serializable {
@@ -31,6 +32,7 @@ public class AddParticipantResponse implements Serializable {
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "ParticipantBandInfo", propOrder = {"id", "name"})
     @Data
     @NoArgsConstructor
     public static class BandInfo implements Serializable {
@@ -40,7 +42,7 @@ public class AddParticipantResponse implements Serializable {
         @XmlElement
         private Integer id;
 
-        @XmlElement(name = "n")
+        @XmlElement(name = "name")
         private String name;
 
         public BandInfo(Integer id, String name) {

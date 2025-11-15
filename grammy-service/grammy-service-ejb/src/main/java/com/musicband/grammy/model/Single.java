@@ -20,6 +20,7 @@ import java.time.LocalDate;
 @Table(name = "singles")
 @XmlRootElement(name = "single")
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Single", propOrder = {"id", "title", "duration", "releaseDate", "chartPosition"})
 @Data
 @Setter
 @NoArgsConstructor

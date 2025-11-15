@@ -25,7 +25,6 @@ public class ConsulServiceDiscovery {
         LOGGER.info("ConsulServiceDiscovery initialized with Consul at " + consulHost + ":" + consulPort);
     }
 
-    
     public String getServiceUrl(String serviceName) {
         try {
             Response<List<HealthService>> healthyServices = 
@@ -38,7 +37,6 @@ public class ConsulServiceDiscovery {
                 return null;
             }
 
-            
             HealthService selectedService = services.get(random.nextInt(services.size()));
             
             String address = selectedService.getService().getAddress();
@@ -55,7 +53,6 @@ public class ConsulServiceDiscovery {
         }
     }
 
-    
     public List<HealthService> getHealthyInstances(String serviceName) {
         try {
             Response<List<HealthService>> response = 

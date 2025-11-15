@@ -25,16 +25,13 @@ public class SingleServiceBean implements SingleServiceRemote {
             throw new IllegalArgumentException("Band with id " + bandId + " not found");
         }
 
-        
         single.setBandId(bandId);
         single.setId(null);
         Single created = repository.create(single);
 
-        
         String bandName = mainApiClient.getBandName(bandId);
         System.out.println("BandName: " + bandName);
 
-        
         return new AddSingleResponse(created, bandId, bandName);
     }
 }

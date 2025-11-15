@@ -18,6 +18,7 @@ import java.time.LocalDate;
 @Table(name = "participants")
 @XmlRootElement(name = "participant")
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Participant", propOrder = {"id", "name", "role", "joinDate", "instrument"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,8 +33,7 @@ public class Participant implements Serializable {
 
     @NotBlank(message = "Name cannot be null or empty")
     @Column(nullable = false, columnDefinition = "TEXT")
-
-    @XmlElement(name = "n", required = true)
+    @XmlElement(name = "name", required = true)
     private String name;
 
     @NotBlank(message = "Role cannot be null or empty")

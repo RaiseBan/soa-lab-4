@@ -10,8 +10,8 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
-    <name>Grammy Service</name>
-    <description>Grammy service for singles and participants management</description>
+    <name>Grammy SOAP Service</name>
+    <description>Grammy SOAP service for singles and participants management</description>
 
     <modules>
         <module>grammy-service-ejb</module>

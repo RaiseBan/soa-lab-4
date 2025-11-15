@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 @XmlRootElement(name = "addSingleResponse")
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "AddSingleResponse", propOrder = {"single", "bandInfo"})
 @Data
 @NoArgsConstructor
 public class AddSingleResponse implements Serializable {
@@ -26,6 +27,7 @@ public class AddSingleResponse implements Serializable {
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "BandInfo", propOrder = {"id", "name"})
     @Data
     @NoArgsConstructor
     public static class BandInfo implements Serializable {
@@ -35,7 +37,7 @@ public class AddSingleResponse implements Serializable {
         @XmlElement
         private Integer id;
 
-        @XmlElement(name = "n")
+        @XmlElement(name = "name")
         private String name;
 
         public BandInfo(Integer id, String name) {
