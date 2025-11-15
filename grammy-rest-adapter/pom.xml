@@ -99,7 +99,7 @@
                 </configuration>
             </plugin>
 
-            <!-- JAX-WS Maven Plugin to generate client stubs -->
+            <!-- JAX-WS Maven Plugin to generate client stubs from LOCAL WSDL -->
             <plugin>
                 <groupId>com.sun.xml.ws</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
@@ -110,13 +110,17 @@
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
-                            <wsdlUrls>
-                                <wsdlUrl>http://localhost:8080/grammy-soap-service/GrammyService?wsdl</wsdlUrl>
-                            </wsdlUrls>
+                            <!-- Use local WSDL file instead of remote URL -->
+                            <wsdlDirectory>${project.basedir}/src/main/resources/wsdl</wsdlDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>GrammyService.wsdl</wsdlFile>
+                            </wsdlFiles>
                             <packageName>com.musicband.grammy.client.generated</packageName>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport</sourceDestDir>
                             <destDir>${project.build.directory}/classes</destDir>
                             <extension>true</extension>
+                            <!-- Allow generation even if service is not running -->
+                            <xnocompile>false</xnocompile>
                         </configuration>
                     </execution>
                 </executions>

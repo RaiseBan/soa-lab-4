@@ -17,7 +17,7 @@ public class GrammySoapClient {
     private static final Logger LOGGER = Logger.getLogger(GrammySoapClient.class.getName());
     private static final String NAMESPACE = "http://grammy.musicband.com/";
     private static final String SERVICE_URL_PROPERTY = "grammy.soap.service.url";
-    private static final String DEFAULT_URL = "http://localhost:8080/grammy-soap-service/GrammyService";
+    private static final String DEFAULT_URL = "https://localhost:9443/grammy-soap-service/GrammyService";
 
     private String getServiceUrl() {
         return System.getProperty(SERVICE_URL_PROPERTY, DEFAULT_URL);

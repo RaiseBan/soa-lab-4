@@ -14,8 +14,8 @@
     <artifactId>grammy-service-web</artifactId>
     <packaging>war</packaging>
 
-    <name>Grammy Service Web</name>
-    <description>Web module with REST endpoints for Grammy Service</description>
+    <name>Grammy SOAP Service Web</name>
+    <description>Web module with SOAP endpoints for Grammy Service</description>
 
     <dependencies>
         <!-- EJB module dependency -->
@@ -30,6 +30,14 @@
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-web-api</artifactId>
+        </dependency>
+
+        <!-- Jakarta XML Web Services (JAX-WS) -->
+        <dependency>
+            <groupId>jakarta.xml.ws</groupId>
+            <artifactId>jakarta.xml.ws-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Lombok -->
@@ -49,10 +57,17 @@
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
         </dependency>
+
+        <!-- Bean Validation -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>7.0.5.Final</version>
+        </dependency>
     </dependencies>
 
     <build>
-        <finalName>grammy-service-web</finalName>
+        <finalName>grammy-soap-service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
