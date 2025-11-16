@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://grammy.musicband.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="GrammyService" targetNamespace="http://grammy.musicband.com/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://grammy.musicband.com/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://grammy.musicband.com/" version="1.0">
+  <xs:element name="addParticipantResponse" type="tns:AddParticipantResponse"/>
+  <xs:element name="addParticipantToBand" type="tns:addParticipantToBand"/>
+  <xs:element name="addParticipantToBandResponse" type="tns:addParticipantToBandResponse"/>
+  <xs:element name="addSingleResponse" type="tns:AddSingleResponse"/>
+  <xs:element name="addSingleToBand" type="tns:addSingleToBand"/>
+  <xs:element name="addSingleToBandResponse" type="tns:addSingleToBandResponse"/>
+  <xs:element name="participant" type="tns:Participant"/>
+  <xs:element name="single" type="tns:Single"/>
+  <xs:complexType name="addSingleToBand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="bandId" type="xs:int"/>
+      <xs:element minOccurs="0" name="single" type="tns:Single"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Single">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:int"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="duration" type="xs:int"/>
+      <xs:element name="releaseDate" type="xs:string"/>
+      <xs:element minOccurs="0" name="chartPosition" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="addSingleToBandResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="addSingleResponse" type="tns:AddSingleResponse"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AddSingleResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="single" type="tns:Single"/>
+      <xs:element minOccurs="0" name="bandInfo" type="tns:BandInfo"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BandInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:int"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="faultInfo">
+    <xs:sequence>
+      <xs:element name="code" type="xs:int"/>
+      <xs:element minOccurs="0" name="details" type="xs:string"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="addParticipantToBand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="bandId" type="xs:int"/>
+      <xs:element minOccurs="0" name="participant" type="tns:Participant"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Participant">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:int"/>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="role" type="xs:string"/>
+      <xs:element name="joinDate" type="xs:string"/>
+      <xs:element minOccurs="0" name="instrument" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="addParticipantToBandResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="addParticipantResponse" type="tns:AddParticipantResponse"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AddParticipantResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="participant" type="tns:Participant"/>
+      <xs:element minOccurs="0" name="updatedParticipantsCount" type="xs:int"/>
+      <xs:element minOccurs="0" name="bandInfo" type="tns:ParticipantBandInfo"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ParticipantBandInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:int"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GrammyServiceFault" nillable="true" type="tns:faultInfo"/>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="addParticipantToBandResponse">
+    <wsdl:part element="tns:addParticipantToBandResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addSingleToBandResponse">
+    <wsdl:part element="tns:addSingleToBandResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addSingleToBand">
+    <wsdl:part element="tns:addSingleToBand" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GrammyServiceFault">
+    <wsdl:part element="tns:GrammyServiceFault" name="GrammyServiceFault">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addParticipantToBand">
+    <wsdl:part element="tns:addParticipantToBand" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="GrammyWebService">
+    <wsdl:operation name="addSingleToBand">
+      <wsdl:input message="tns:addSingleToBand" name="addSingleToBand">
+    </wsdl:input>
+      <wsdl:output message="tns:addSingleToBandResponse" name="addSingleToBandResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:GrammyServiceFault" name="GrammyServiceFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="addParticipantToBand">
+      <wsdl:input message="tns:addParticipantToBand" name="addParticipantToBand">
+    </wsdl:input>
+      <wsdl:output message="tns:addParticipantToBandResponse" name="addParticipantToBandResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:GrammyServiceFault" name="GrammyServiceFault">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GrammyServiceSoapBinding" type="tns:GrammyWebService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="addSingleToBand">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="addSingleToBand">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addSingleToBandResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="GrammyServiceFault">
+        <soap:fault name="GrammyServiceFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="addParticipantToBand">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="addParticipantToBand">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addParticipantToBandResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="GrammyServiceFault">
+        <soap:fault name="GrammyServiceFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GrammyService">
+    <wsdl:port binding="tns:GrammyServiceSoapBinding" name="GrammyServicePort">
+      <soap:address location="http://localhost:9080/grammy-soap-service/GrammyService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
