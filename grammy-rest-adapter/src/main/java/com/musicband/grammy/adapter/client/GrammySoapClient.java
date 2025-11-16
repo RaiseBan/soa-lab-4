@@ -64,14 +64,11 @@ public class GrammySoapClient {
             // Операция с namespace
             SOAPElement operation = soapBody.addChildElement("addSingleToBand", "", NAMESPACE);
 
-            // Дочерние элементы с ЯВНЫМ пустым namespace
-            SOAPElement bandIdElement = operation.addChildElement("bandId");
-            bandIdElement.removeNamespaceDeclaration("");
-            bandIdElement.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "");
+            // Дочерние элементы БЕЗ namespace (пустой URI "")
+            SOAPElement bandIdElement = operation.addChildElement("bandId", "", "");
             bandIdElement.addTextNode(bandId.toString());
 
-            SOAPElement singleElement = operation.addChildElement("single");
-            singleElement.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "");
+            SOAPElement singleElement = operation.addChildElement("single", "", "");
 
             addChildWithEmptyNS(singleElement, "title", single.getTitle());
             addChildWithEmptyNS(singleElement, "duration", single.getDuration().toString());
@@ -131,13 +128,11 @@ public class GrammySoapClient {
             // Операция с namespace
             SOAPElement operation = soapBody.addChildElement("addParticipantToBand", "", NAMESPACE);
 
-            // Дочерние элементы с ЯВНЫМ пустым namespace
-            SOAPElement bandIdElement = operation.addChildElement("bandId");
-            bandIdElement.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "");
+            // Дочерние элементы БЕЗ namespace (пустой URI "")
+            SOAPElement bandIdElement = operation.addChildElement("bandId", "", "");
             bandIdElement.addTextNode(bandId.toString());
 
-            SOAPElement participantElement = operation.addChildElement("participant");
-            participantElement.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "");
+            SOAPElement participantElement = operation.addChildElement("participant", "", "");
 
             addChildWithEmptyNS(participantElement, "name", participant.getName());
             addChildWithEmptyNS(participantElement, "role", participant.getRole());
@@ -183,8 +178,8 @@ public class GrammySoapClient {
 
     private void addChildWithEmptyNS(SOAPElement parent, String name, String value) throws SOAPException {
         if (value != null) {
-            SOAPElement child = parent.addChildElement(name);
-            // Не нужно устанавливать xmlns="" для детей, они унаследуют от parent
+            // Добавляем элемент с пустым namespace
+            SOAPElement child = parent.addChildElement(name, "", "");
             child.addTextNode(value);
         }
     }
@@ -201,14 +196,39 @@ public class GrammySoapClient {
         Single single = new Single();
         AddSingleResponse.BandInfo bandInfo = new AddSingleResponse.BandInfo();
 
-        SOAPElement responseElement = (SOAPElement) body.getFirstChild();
+        // Первый элемент - это addSingleToBandResponse (wrapper)
+        SOAPElement wrapperElement = (SOAPElement) body.getFirstChild();
+        LOGGER.info("Wrapper element: " + wrapperElement.getLocalName());
 
+        // Внутри wrapper находится addSingleResponse
+        SOAPElement responseElement = null;
+        java.util.Iterator<?> wrapperIterator = wrapperElement.getChildElements();
+        while (wrapperIterator.hasNext()) {
+            Object obj = wrapperIterator.next();
+            if (obj instanceof SOAPElement) {
+                SOAPElement element = (SOAPElement) obj;
+                if ("addSingleResponse".equals(element.getLocalName())) {
+                    responseElement = element;
+                    break;
+                }
+            }
+        }
+
+        if (responseElement == null) {
+            LOGGER.warning("addSingleResponse element not found in response");
+            return response;
+        }
+
+        LOGGER.info("Response element: " + responseElement.getLocalName());
+
+        // Теперь парсим содержимое addSingleResponse
         java.util.Iterator<?> iterator = responseElement.getChildElements();
         while (iterator.hasNext()) {
             Object obj = iterator.next();
             if (obj instanceof SOAPElement) {
                 SOAPElement element = (SOAPElement) obj;
                 String localName = element.getLocalName();
+                LOGGER.info("Parsing element: " + localName);
 
                 if ("single".equals(localName)) {
                     single = parseSingleElement(element);
@@ -235,14 +255,39 @@ public class GrammySoapClient {
         Participant participant = new Participant();
         AddParticipantResponse.BandInfo bandInfo = new AddParticipantResponse.BandInfo();
 
-        SOAPElement responseElement = (SOAPElement) body.getFirstChild();
+        // Первый элемент - это addParticipantToBandResponse (wrapper)
+        SOAPElement wrapperElement = (SOAPElement) body.getFirstChild();
+        LOGGER.info("Wrapper element: " + wrapperElement.getLocalName());
 
+        // Внутри wrapper находится addParticipantResponse
+        SOAPElement responseElement = null;
+        java.util.Iterator<?> wrapperIterator = wrapperElement.getChildElements();
+        while (wrapperIterator.hasNext()) {
+            Object obj = wrapperIterator.next();
+            if (obj instanceof SOAPElement) {
+                SOAPElement element = (SOAPElement) obj;
+                if ("addParticipantResponse".equals(element.getLocalName())) {
+                    responseElement = element;
+                    break;
+                }
+            }
+        }
+
+        if (responseElement == null) {
+            LOGGER.warning("addParticipantResponse element not found in response");
+            return response;
+        }
+
+        LOGGER.info("Response element: " + responseElement.getLocalName());
+
+        // Теперь парсим содержимое addParticipantResponse
         java.util.Iterator<?> iterator = responseElement.getChildElements();
         while (iterator.hasNext()) {
             Object obj = iterator.next();
             if (obj instanceof SOAPElement) {
                 SOAPElement element = (SOAPElement) obj;
                 String localName = element.getLocalName();
+                LOGGER.info("Parsing element: " + localName);
 
                 if ("participant".equals(localName)) {
                     participant = parseParticipantElement(element);
@@ -269,6 +314,8 @@ public class GrammySoapClient {
                 SOAPElement element = (SOAPElement) obj;
                 String localName = element.getLocalName();
                 String value = element.getTextContent();
+
+                LOGGER.info("Parsing single field: " + localName + " = " + value);
 
                 switch (localName) {
                     case "id":
@@ -306,6 +353,8 @@ public class GrammySoapClient {
                 String localName = element.getLocalName();
                 String value = element.getTextContent();
 
+                LOGGER.info("Parsing participant field: " + localName + " = " + value);
+
                 switch (localName) {
                     case "id":
                         participant.setId(Integer.parseInt(value));
@@ -339,6 +388,8 @@ public class GrammySoapClient {
                 String localName = element.getLocalName();
                 String value = element.getTextContent();
 
+                LOGGER.info("Parsing bandInfo field: " + localName + " = " + value);
+
                 if ("id".equals(localName)) {
                     bandInfo.setId(Integer.parseInt(value));
                 } else if ("name".equals(localName)) {
@@ -359,6 +410,8 @@ public class GrammySoapClient {
                 SOAPElement element = (SOAPElement) obj;
                 String localName = element.getLocalName();
                 String value = element.getTextContent();
+
+                LOGGER.info("Parsing participant bandInfo field: " + localName + " = " + value);
 
                 if ("id".equals(localName)) {
                     bandInfo.setId(Integer.parseInt(value));
