@@ -41,7 +41,7 @@ public class GrammyWebServiceImpl implements GrammyWebService {
             if (bandId == null || bandId < 1) {
                 throw new GrammyServiceFault(
                         "Validation failed",
-                        new GrammyServiceFault.FaultInfo(422, "Validation failed", 
+                        new GrammyServiceFault.FaultInfo(422, "Validation failed",
                                 "Band ID must be a positive integer")
                 );
             }
@@ -50,7 +50,7 @@ public class GrammyWebServiceImpl implements GrammyWebService {
             if (single == null) {
                 throw new GrammyServiceFault(
                         "Invalid request",
-                        new GrammyServiceFault.FaultInfo(400, "Invalid request", 
+                        new GrammyServiceFault.FaultInfo(400, "Invalid request",
                                 "Single cannot be null")
                 );
             }
@@ -83,36 +83,53 @@ public class GrammyWebServiceImpl implements GrammyWebService {
                     new GrammyServiceFault.FaultInfo(422, "Business validation failed", e.getMessage())
             );
         } catch (RuntimeException e) {
+            e.printStackTrace();
+
+            // ДОБАВЬТЕ ЭТУ ПРОВЕРКУ - EJB оборачивает исключения
+            Throwable cause = e.getCause();
+            if (cause instanceof IllegalArgumentException) {
+                if (cause.getMessage() != null && cause.getMessage().contains("not found")) {
+                    throw new GrammyServiceFault(
+                            "Music band not found",
+                            new GrammyServiceFault.FaultInfo(404, "Music band not found", cause.getMessage())
+                    );
+                }
+                throw new GrammyServiceFault(
+                        "Business validation failed",
+                        new GrammyServiceFault.FaultInfo(422, "Business validation failed", cause.getMessage())
+                );
+            }
+
             if (e.getMessage() != null && e.getMessage().contains("Main API service unavailable")) {
                 throw new GrammyServiceFault(
                         "Main API service unavailable",
-                        new GrammyServiceFault.FaultInfo(503, "Main API service unavailable", 
+                        new GrammyServiceFault.FaultInfo(503, "Main API service unavailable",
                                 "Unable to connect to Music Band Management API")
                 );
             }
             throw new GrammyServiceFault(
                     "Internal server error",
-                    new GrammyServiceFault.FaultInfo(500, "Internal server error", 
+                    new GrammyServiceFault.FaultInfo(500, "Internal server error",
                             "An unexpected error occurred: " + e.getMessage())
             );
         } catch (Exception e) {
             throw new GrammyServiceFault(
                     "Internal server error",
-                    new GrammyServiceFault.FaultInfo(500, "Internal server error", 
+                    new GrammyServiceFault.FaultInfo(500, "Internal server error",
                             "An unexpected error occurred: " + e.getMessage())
             );
         }
     }
 
     @Override
-    public AddParticipantResponse addParticipantToBand(Integer bandId, Participant participant) 
+    public AddParticipantResponse addParticipantToBand(Integer bandId, Participant participant)
             throws GrammyServiceFault {
         try {
             // Валидация bandId
             if (bandId == null || bandId < 1) {
                 throw new GrammyServiceFault(
                         "Validation failed",
-                        new GrammyServiceFault.FaultInfo(422, "Validation failed", 
+                        new GrammyServiceFault.FaultInfo(422, "Validation failed",
                                 "Band ID must be a positive integer")
                 );
             }
@@ -121,7 +138,7 @@ public class GrammyWebServiceImpl implements GrammyWebService {
             if (participant == null) {
                 throw new GrammyServiceFault(
                         "Invalid request",
-                        new GrammyServiceFault.FaultInfo(400, "Invalid request", 
+                        new GrammyServiceFault.FaultInfo(400, "Invalid request",
                                 "Participant cannot be null")
                 );
             }
@@ -154,22 +171,39 @@ public class GrammyWebServiceImpl implements GrammyWebService {
                     new GrammyServiceFault.FaultInfo(422, "Business validation failed", e.getMessage())
             );
         } catch (RuntimeException e) {
+            e.printStackTrace();
+
+            // Проверяем обернутые исключения от EJB
+            Throwable cause = e.getCause();
+            if (cause instanceof IllegalArgumentException) {
+                if (cause.getMessage() != null && cause.getMessage().contains("not found")) {
+                    throw new GrammyServiceFault(
+                            "Music band not found",
+                            new GrammyServiceFault.FaultInfo(404, "Music band not found", cause.getMessage())
+                    );
+                }
+                throw new GrammyServiceFault(
+                        "Business validation failed",
+                        new GrammyServiceFault.FaultInfo(422, "Business validation failed", cause.getMessage())
+                );
+            }
+
             if (e.getMessage() != null && e.getMessage().contains("Main API service unavailable")) {
                 throw new GrammyServiceFault(
                         "Main API service unavailable",
-                        new GrammyServiceFault.FaultInfo(503, "Main API service unavailable", 
+                        new GrammyServiceFault.FaultInfo(503, "Main API service unavailable",
                                 "Unable to connect to Music Band Management API")
                 );
             }
             throw new GrammyServiceFault(
                     "Internal server error",
-                    new GrammyServiceFault.FaultInfo(500, "Internal server error", 
+                    new GrammyServiceFault.FaultInfo(500, "Internal server error",
                             "An unexpected error occurred: " + e.getMessage())
             );
         } catch (Exception e) {
             throw new GrammyServiceFault(
                     "Internal server error",
-                    new GrammyServiceFault.FaultInfo(500, "Internal server error", 
+                    new GrammyServiceFault.FaultInfo(500, "Internal server error",
                             "An unexpected error occurred: " + e.getMessage())
             );
         }

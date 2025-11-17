@@ -11,19 +11,21 @@ public class CorsFilter implements ContainerResponseFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext,
-                      ContainerResponseContext responseContext) throws IOException {
-        
+                       ContainerResponseContext responseContext) throws IOException {
+
         responseContext.getHeaders().add("Access-Control-Allow-Origin", "https://se.ifmo.ru");
-        
+
         responseContext.getHeaders().add("Access-Control-Allow-Methods",
-            "GET, POST, PUT, DELETE, PATCH, OPTIONS");
-        
+                "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+
         responseContext.getHeaders().add("Access-Control-Allow-Headers",
-            "Origin, Content-Type, Accept, Authorization, X-Requested-With");
-        
+                "Origin, Content-Type, Accept, Authorization, X-Requested-With");
+
         responseContext.getHeaders().add("Access-Control-Max-Age", "3600");
-        
+
         responseContext.getHeaders().add("Access-Control-Expose-Headers",
-            "Content-Length, Content-Type, Location");
+                "Content-Length, Content-Type, Location");
+
+        responseContext.getHeaders().add("Access-Control-Allow-Private-Network", "true");
     }
 }
